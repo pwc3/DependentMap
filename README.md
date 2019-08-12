@@ -25,17 +25,21 @@ In our example above, we would create two keys, `username` and `createDate` and 
 ```swift
 extension DependentMapKey {
 
-    static var username: DependentMapKey<UserDefaults, String> {
+    static var username: DependentMapKey<UserDefaults, String, String> {
         return .init("username")
     }
 
-    static var createDate: DependentMapKey<UserDefaults, Date> {
+    static var createDate: DependentMapKey<UserDefaults, String, Date> {
         return .init("createDate")
     }
 }
 ```
 
-In the declarations above, `username` is a `DependentMapKey` that can be used as a key on a `UserDefaults` instance which will be associated with a `String` value. The `createDate` key is also defined for the `UserDefaults` type but its associated values are of type `Date`.
+The `DependentMapKey` declarations are generic with respect to three type parameters:
+
+1. The type of dependent map that this key indexes. In both instances above, this is `UserDefaults`, indicating that these keys can only be used on `UserDefaults` instances.
+2. The raw key type. This is `String` because `UserDefaults` uses `String` values as keys. The type of the raw value passed to the `init` function in the body of the computed properties must match this type.
+3. The type of values in the map referenced by this key. The `username` key refers to `String` values and the `createDate` key refers to `Date` values.
 
 We can then use these keys to write to and read from a `UserDefaults` object:
 
@@ -53,9 +57,9 @@ In the calls to `set(_:for:)`, the compiler ensures that the value's type matche
 
 The framework defines a `DependentMapSemantics` protocol that requires two functions: `value(for:)` and `set(_:for:)` to read and write values associated with a key. A protocol extension defines a subscript operator for simpler read-write access.
 
-The framework also defines a `DependentMapKey<MapType, ValueType>` class. The `MapType` parameter defines the `DependentMapSemantics` type this key can be used on. The `ValueType` defines the value type that the key maps to.
+The framework also defines a `DependentMapKey<MapType, RawKeyType, ValueType>` class. The `MapType` parameter defines the `DependentMapSemantics` type this key can be used on. The `RawKeyType` parameter defines the key type in the underlying collection. The `ValueType` defines the value type that the key maps to.
 
-A `DependentDictionary` struct is provided that provides dependent map semantics on a `Dictionary`.
+An extension to `Dictionary` is provided to add dependent map semantics. Note use of this extension is limited to `Dictionary` instances with `Any` as the value type.
 
-Finally, an extension to `UserDefaults` is provided to implement the `DependentMapSemantics` protocol.
+Finally, an extension to `UserDefaults` is provided to add dependent map semantics.
 
