@@ -25,16 +25,37 @@
 
 import Foundation
 
+/**
+ Defines dependent map semantics that can be applied to any type that provides map semantics from homogeneous keys to heterogeneous values.
+ */
 public protocol DependentMapSemantics {
 
-    func value<KeyType: DependentMapKey<Self, ValueType>, ValueType>(for key: KeyType) -> ValueType?
+    /// The homogeneous key type.
+    associatedtype RawKeyType: Hashable
 
-    mutating func set<KeyType: DependentMapKey<Self, ValueType>, ValueType>(_ value: ValueType?, for key: KeyType)
+    /**
+     Returns the value associated with the specified key. Will return `nil` if no value has been associated with the specified key or if the value associated with the specified key cannot be converted to the key's value type.
+
+     The return type is defined by the `key` argument.
+     */
+    func value<DependentKeyType, ValueType>(for key: DependentKeyType) -> ValueType?
+        where DependentKeyType: DependentMapKey<Self, RawKeyType, ValueType>
+
+    /**
+     Associates the specified value with the specified key.
+
+     The type of the `value` argument must match the value type defined by the `key` argument.
+     */
+    mutating func set<DependentKeyType, ValueType>(_ value: ValueType?, for key: DependentKeyType)
+        where DependentKeyType: DependentMapKey<Self, RawKeyType, ValueType>
 }
 
 extension DependentMapSemantics {
 
-    public subscript<KeyType: DependentMapKey<Self, ValueType>, ValueType>(key: KeyType) -> ValueType? {
+    /// Allows subscript notation to be used to read and write a key's associated value.
+    public subscript<DependentKeyType, ValueType>(key: DependentKeyType) -> ValueType?
+        where DependentKeyType: DependentMapKey<Self, RawKeyType, ValueType> {
+
         get {
             return value(for: key)
         }

@@ -1,5 +1,5 @@
 //
-//  DependentDictionary.swift
+//  Dictionary+DependentMapSemantics.swift
 //  DependentMap
 //
 //  Copyright (c) 2019 Anodized Software, Inc.
@@ -25,19 +25,21 @@
 
 import Foundation
 
-public struct DependentDictionary: DependentMapSemantics {
+/// Adds dependent map semantics to the `Dictionary` type. Note that the extension is only applicable when the dictionary's value type is `Any`.
+extension Dictionary: DependentMapSemantics
+    where Value: Any
+{
+    public typealias RawKeyType = Key
 
-    private var storage: [String: Any]
-
-    public init() {
-        storage = [:]
+    public func value<DependentKeyType, ValueType>(for key: DependentKeyType) -> ValueType?
+        where DependentKeyType : DependentMapKey<Dictionary, RawKeyType, ValueType>
+    {
+        return self[key.rawValue] as? ValueType
     }
 
-    public func value<KeyType, ValueType>(for key: KeyType) -> ValueType? where KeyType : DependentMapKey<DependentDictionary, ValueType> {
-        return storage[key.rawValue] as? ValueType
-    }
-
-    public mutating func set<KeyType, ValueType>(_ value: ValueType?, for key: KeyType) where KeyType : DependentMapKey<DependentDictionary, ValueType> {
-        storage[key.rawValue] = value
+    public mutating func set<DependentKeyType, ValueType>(_ value: ValueType?, for key: DependentKeyType)
+        where DependentKeyType : DependentMapKey<Dictionary, RawKeyType, ValueType>
+    {
+        self[key.rawValue] = value as? Value
     }
 }

@@ -25,11 +25,34 @@
 
 import Foundation
 
-public final class DependentMapKey<MapType: DependentMapSemantics, ValueType> {
+/**
+ Defines a key in a dependent map. This type is generic with respect to three type parameters:
 
-    public let rawValue: String
+ - `MapType` is the type of the map this key indexes. It must implement the `DependentMapSemantics` protocol.
+ - `RawKeyType` is the type of the raw value of this key. It is used to index the underlying collection. It must implement the `Hashable` protocol.
+ - `ValueType` is the type of the values in the map referenced by this key.
 
-    public init(_ rawValue: String) {
+ It is intended that static keys are added to this type in an extension. For example:
+
+ ```
+ extension DependentMapKey {
+     static var lastLoginDate: DependentMapKey<UserDefaults, String, Date> {
+         return .init("lastLogin")
+     }
+ }
+ ```
+
+ Here, we define a `username` key. The three type parameters are interpreted as follows:
+
+ 1. `UserDefaults`: This is can only be used to index `UserDefaults` instances.
+ 2. `String`: The raw key type is `String` (here, `"lastLogin"`).
+ 3. `Date`: Values associated with this key must be `Date` instances.
+ */
+public final class DependentMapKey<MapType: DependentMapSemantics, RawKeyType: Hashable, ValueType> {
+
+    public let rawValue: RawKeyType
+
+    public init(_ rawValue: RawKeyType) {
         self.rawValue = rawValue
     }
 }

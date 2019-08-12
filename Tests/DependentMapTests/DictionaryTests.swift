@@ -1,5 +1,5 @@
 //
-//  DependentDictionaryTests.swift
+//  DictionaryTests.swift
 //  DependentMap
 //
 //  Copyright (c) 2019 Anodized Software, Inc.
@@ -28,30 +28,30 @@ import XCTest
 
 fileprivate extension DependentMapKey {
 
-    static var int: DependentMapKey<DependentDictionary, Int> {
-        return .init("int")
+    static var int: DependentMapKey<[UUID: Any], UUID, Int> {
+        return .init(UUID(uuidString: "779CB7FE-38BF-4FC9-920C-F2321F699ED9")!)
     }
 
-    static var float: DependentMapKey<DependentDictionary, Float> {
-        return .init("float")
+    static var float: DependentMapKey<[UUID: Any], UUID, Float> {
+        return .init(UUID(uuidString: "1901A435-C13A-4768-96D4-696BC6C23209")!)
     }
 
-    static var date: DependentMapKey<DependentDictionary, Date> {
-        return .init("date")
+    static var date: DependentMapKey<[UUID: Any], UUID, Date> {
+        return .init(UUID(uuidString: "24D899E6-6FBB-4BE2-90B4-6026565589CD")!)
     }
 
-    static var string: DependentMapKey<DependentDictionary, String> {
-        return .init("string")
+    static var string: DependentMapKey<[UUID: Any], UUID, String> {
+        return .init(UUID(uuidString: "2D02A729-BE86-4697-B244-DCD44DC215A1")!)
     }
 }
 
-class DependentDictionaryTests: XCTestCase {
+class DictionaryTests: XCTestCase {
 
-    private var d: DependentDictionary!
+    private var d: [UUID: Any] = [:]
 
     override func setUp() {
         super.setUp()
-        d = DependentDictionary()
+        d = [:]
     }
 
     func testInt() {

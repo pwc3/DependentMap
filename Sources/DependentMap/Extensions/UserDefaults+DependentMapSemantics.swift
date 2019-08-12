@@ -25,21 +25,37 @@
 
 import Foundation
 
+/// Adds dependent map semantics to the `UserDefaults` type.
 extension UserDefaults: DependentMapSemantics {
 
-    public func value<KeyType, ValueType>(for key: KeyType) -> ValueType? where KeyType : DependentMapKey<UserDefaults, ValueType> {
+    public typealias RawKeyType = String
+
+    public func value<DependentKeyType, ValueType>(for key: DependentKeyType) -> ValueType?
+        where DependentKeyType: DependentMapKey<UserDefaults, RawKeyType, ValueType>
+    {
         return value(forKey: key.rawValue) as? ValueType
     }
 
-    public func set<KeyType, ValueType>(_ value: ValueType?, for key: KeyType) where KeyType : DependentMapKey<UserDefaults, ValueType> {
+    public func set<DependentKeyType, ValueType>(_ value: ValueType?, for key: DependentKeyType)
+        where DependentKeyType: DependentMapKey<UserDefaults, RawKeyType, ValueType>
+    {
         set(value, forKey: key.rawValue)
     }
 }
 
 extension UserDefaults {
 
-    public func register<KeyType, ValueType>(defaultValue value: ValueType, for key: KeyType) where KeyType: DependentMapKey<UserDefaults, ValueType> {
+    /**
+     Adds the specified key-value pair to the registration domain.
 
+     See `UserDefaults.register(defaults:)` for further information.
+
+     - parameter value: The default value for the specified key.
+     - parameter key: The key.
+     */
+    public func register<DependentKeyType, ValueType>(defaultValue value: ValueType, for key: DependentKeyType)
+        where DependentKeyType: DependentMapKey<UserDefaults, RawKeyType, ValueType>
+    {
         register(defaults: [key.rawValue: value])
     }
 }

@@ -28,19 +28,19 @@ import XCTest
 
 fileprivate extension DependentMapKey {
 
-    static var int: DependentMapKey<UserDefaults, Int> {
+    static var int: DependentMapKey<UserDefaults, String, Int> {
         return .init("int")
     }
 
-    static var float: DependentMapKey<UserDefaults, Float> {
+    static var float: DependentMapKey<UserDefaults, String, Float> {
         return .init("float")
     }
 
-    static var date: DependentMapKey<UserDefaults, Date> {
+    static var date: DependentMapKey<UserDefaults, String, Date> {
         return .init("date")
     }
 
-    static var string: DependentMapKey<UserDefaults, String> {
+    static var string: DependentMapKey<UserDefaults, String, String> {
         return .init("string")
     }
 }
