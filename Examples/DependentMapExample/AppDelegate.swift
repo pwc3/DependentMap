@@ -23,6 +23,7 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
+import DependentMap
 import UIKit
 
 @UIApplicationMain
@@ -31,7 +32,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+        // Default to dark mode.
+        UserDefaults.standard.register(defaultValue: true, for: .darkMode)
+
         return true
     }
 }

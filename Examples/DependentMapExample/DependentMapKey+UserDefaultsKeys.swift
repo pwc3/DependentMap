@@ -1,6 +1,6 @@
 //
-//  ViewController.swift
-//  DependentMapExample
+//  DependentMapKey+UserDefaultsKeys.swift
+//  DependentMap
 //
 //  Copyright (c) 2019 Anodized Software, Inc.
 //
@@ -24,15 +24,15 @@
 //
 
 import DependentMap
-import UIKit
+import Foundation
 
-class ViewController: UIViewController {
+extension DependentMapKey {
 
-    @IBOutlet var label: UILabel!
+    static var previousLaunchDate: DependentMapKey<UserDefaults, String, Date> {
+        return .init("previousLaunchDate")
+    }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        label.text = DependentMap.text
+    static var darkMode: DependentMapKey<UserDefaults, String, Bool> {
+        return .init("darkMode")
     }
 }
-
