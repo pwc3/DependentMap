@@ -1,5 +1,6 @@
+// swift-tools-version:5.2
 //
-//  DependentMap.h
+//  Package.swift
 //  DependentMap
 //
 //  Copyright (c) 2019-2020 Anodized Software, Inc.
@@ -23,12 +24,23 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+import PackageDescription
 
-//! Project version number for DependentMap.
-FOUNDATION_EXPORT double DependentMapVersionNumber;
-
-//! Project version string for DependentMap.
-FOUNDATION_EXPORT const unsigned char DependentMapVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <DependentMap/PublicHeader.h>
+let package = Package(
+    name: "DependentMap",
+    products: [
+        .library(
+            name: "DependentMap",
+            targets: ["DependentMap"]),
+    ],
+    dependencies: [
+    ],
+    targets: [
+        .target(
+            name: "DependentMap",
+            dependencies: []),
+        .testTarget(
+            name: "DependentMapTests",
+            dependencies: ["DependentMap"]),
+    ]
+)
